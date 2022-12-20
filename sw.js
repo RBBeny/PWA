@@ -13,11 +13,10 @@ const APP_SHELL = [
     "index.html",
     "css/style.css",
     "img/favicon.ico",
-    "img/avatars/gohan.jpg",
-    "img/avatars/goku.jpg",
-    "img/avatars/piccolo.jpg",
-    "img/avatars/trunks.jpg",
-    "img/avatars/vegeta.jpg",
+    "img/avatars/argentina.jpg",
+    "img/avatars/croacia.jpg",
+    "img/avatars/france.jpg",
+    "img/avatars/morocco.jpg",
     "js/app.js",
     "js/sw-utils.js",
     "js/sw-db.js",
@@ -113,20 +112,15 @@ self.addEventListener('push', e => {
         data: {            
             url: '/',
             id: data.usuario
-        }
-        // // accciones personalizadas: editar, eliminar o lo que se requiera
-        // actions: [
-        //     {
-        //         action: 'goku-action',
-        //         title: 'Goku',
-        //         icon: 'img/avatars/goku.jpg'
-        //     },
-        //     {
-        //         action: 'vegeta-action',
-        //         title: 'Vegeta',
-        //         icon: 'img/avatars/vegeta.jpg'
-        //     }
-        // ]
+        },
+        // accciones personalizadas: editar, eliminar o lo que se requiera
+        actions: [
+            {
+                action: 'france-action',
+                title: 'france',
+                icon: 'img/avatars/france.jpg'
+            }
+        ]
     };
 
     e.waitUntil( self.registration.showNotification( title, options) );

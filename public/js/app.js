@@ -1,6 +1,6 @@
 
 var url = window.location.href;
-var swLocation = '/ejemplo-sincronizacion/sw.js';
+var swLocation = '/sw.js';
 var swReg;
 
 if ( navigator.serviceWorker ) {
@@ -21,8 +21,63 @@ if ( navigator.serviceWorker ) {
     });
 }
 
+var bd = new PouchDB("agenda"),
+  $nombreCompleto = document.querySelector("#nombreCompleto"),
+  $direccion = document.querySelector("#direccion"),
+  $telefono = document.querySelector("#telefono"),
+  $btnGuardar = document.querySelector("#btnGuardar"),
+  $cuerpoTabla = document.querySelector("#cuerpoTabla"); //Ojo: nueva variable aquí
+
+$btnGuardar.addEventListener("click", function() {
+  var nombreCompleto = $nombreCompleto.value,
+    direccion = $direccion.value,
+    telefono = $telefono.value;
+
+  if (nombreCompleto && direccion && telefono) {
+    bd.post({
+        nombre: nombreCompleto,
+        direccion: direccion,
+        telefono: telefono
+      })
+      .then(function(respuesta) {
+        if (respuesta.ok) {
+          consultarContactos();
+          alert("Guardado correctamente");
+        }
+      });
+  }
+});
 
 
+var consultarContactos = function() {
+  bd.allDocs({
+    include_docs: true
+  }).then(function(documentos) {
+    var htmlCuerpoTabla = "";
+    for (var i = 0; i < documentos.rows.length; i++) {
+      var contacto = documentos.rows[i].doc;
+      htmlCuerpoTabla += "<tr>";
+
+      htmlCuerpoTabla += "<td>";
+      htmlCuerpoTabla += contacto.nombre;
+      htmlCuerpoTabla += "</td>";
+
+      htmlCuerpoTabla += "<td>";
+      htmlCuerpoTabla += contacto.direccion;
+      htmlCuerpoTabla += "</td>";
+
+      htmlCuerpoTabla += "<td>";
+      htmlCuerpoTabla += contacto.telefono;
+      htmlCuerpoTabla += "</td>";
+
+      htmlCuerpoTabla += "</tr>";
+    }
+
+    $cuerpoTabla.innerHTML = htmlCuerpoTabla; //Asignar HTML concatenado
+  });
+};
+
+consultarContactos();
 
 
 // Referencias de jQuery
@@ -40,11 +95,31 @@ var modalAvatar = $('#modal-avatar');
 var avatarBtns  = $('.seleccion-avatar');
 var txtMensaje  = $('#txtMensaje');
 
-// El usuario, contiene el ID del hÃ©roe seleccionado
+var agenda = $('#agenda');
+var equipos = $('#equipos');
+
+var informacion = $('#informacion');
+
+// El usuario, contiene el ID de seleccionado
 var usuario;
 
+function registroA(){
+    agenda.removeClass('oculto');
+    equipos.addClass('oculto');
+    informacion.addClass('oculto');
+}
 
+function salirRegistroA(){
+    equipos.removeClass('oculto');
+    agenda.addClass('oculto');
+    informacion.addClass('oculto');
+}
 
+function miInfo(){
+    informacion.removeClass('oculto');
+    equipos.addClass('oculto');
+    agenda.addClass('oculto');
+}
 
 // ===== Codigo de la aplicaciÃ³n
 
@@ -141,7 +216,15 @@ function logIn( ingreso ) {
         timeline.addClass('oculto');
         avatarSel.removeClass('oculto');
 
-        titulo.text('Seleccione Personaje');
+        //titulo.text('Seleccione Personaje');
+        titulo.text('');
+
+        var cont = `            Selecciona tu Equipo Favorito
+
+        <i class="fa fa-user"  onclick="miInfo();">Mi nombre   </i>
+        <i class="fa fa-calendar"  onclick="registroA();">Agenda</i>
+    `;
+        titulo.prepend(cont);
     
     }
 

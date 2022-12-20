@@ -5,17 +5,17 @@ const push = require('./push');
 const mensajes = [
     {
         _id : "1",
-        user: "goku",
+        user: "france",
         mensaje : "mensaje numero uno"
     },
     {
         _id : "2",
-        user: "gohan",
+        user: "argentina",
         mensaje : "mensaje numero dos"
     },
     {
         _id : "3",
-        user: "goku",
+        user: "croacia",
         mensaje : "mensaje numero tres"
     }
 ];
@@ -74,7 +74,7 @@ router.post('/subscribe', (req, res) => {
   // {
   //  "titulo": "Saludos",
   //  "cuerpo": "Aqui va el mensaje que se quiere enviar",
-  //  "usuario": "vegeta"
+  //  "usuario": "argentina"
   // }
   router.post('/push', (req, res) => {
   
